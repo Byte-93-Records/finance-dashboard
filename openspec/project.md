@@ -45,6 +45,8 @@ Primary goal: Create a self-hosted, privacy-focused alternative to cloud-based f
 - **Dependency Injection**: Pass dependencies explicitly, avoid global state
 - **Batch Processing**: Process statements in configurable batch sizes
 
+### Strategy & Design Decisions
+
 #### Database Access Strategy
 **Decision: Use SQLAlchemy ORM exclusively - NO raw SQL queries**
 
@@ -67,6 +69,132 @@ Primary goal: Create a self-hosted, privacy-focused alternative to cloud-based f
 - Slightly lower raw performance vs hand-tuned SQL (acceptable for personal use scale)
 - Learning curve for SQLAlchemy query API (outweighed by long-term maintainability)
 - ORM abstraction may hide database behavior (mitigated by SQL query logging in development)
+
+#### PDF Processing Strategy
+**Decision: Use Docling for PDF extraction instead of PyPDF2, pdfplumber, or Camelot**
+
+**Rationale:**
+1. **Modern Architecture**: Docling is specifically designed for structured document extraction with ML-based layout understanding
+2. **Bank Statement Complexity**: Bank PDFs have complex layouts with tables, multiple columns, headers/footers - Docling handles these better than regex-based parsers
+3. **CSV Output**: Direct PDF-to-CSV conversion aligns with ETL pipeline, avoiding custom parsing logic
+4. **Maintenance Burden**: Traditional PDF libraries require bank-specific parsers for each institution - Docling generalizes better
+5. **Future-Proofing**: ML-based extraction adapts to layout changes without code modifications
+
+**Implementation Rules:**
+- Docling processes all PDF inputs into standardized CSV format
+- PDF originals remain untouched (read-only)
+- Extraction failures logged for manual review, not auto-corrected
+- CSV output validated before database ingestion
+
+**Trade-offs Accepted:**
+- Dependency on Docling's extraction accuracy (mitigated by validation layer)
+- Heavier dependency than simple PDF libraries (acceptable for functionality gained)
+- May require Docling configuration per bank format (still less code than custom parsers)
+
+#### Containerization Strategy
+**Decision: Docker Compose for entire stack - no local Python/PostgreSQL installations**
+
+**Rationale:**
+1. **Reproducibility**: `docker-compose up` guarantees identical environment across machines
+2. **Isolation**: No conflicts with system Python, database versions, or other projects
+3. **Dependency Management**: All services (PostgreSQL, Grafana, Python) versioned and orchestrated together
+4. **Simplified Setup**: New users don't need to install PostgreSQL, configure ports, manage Python versions
+5. **Production Parity**: Development environment matches deployment environment exactly
+
+**Implementation Rules:**
+- All services defined in `docker-compose.yml` with explicit version pinning
+- Python dependencies managed via `uv` in Docker image for fast builds
+- PostgreSQL data persisted via Docker volumes (survives container restarts)
+- Environment variables via `.env` file (never hardcoded)
+- Health checks ensure services start in correct order
+
+**Trade-offs Accepted:**
+- Docker overhead on resource-constrained machines (minimal impact for small dataset)
+- Learning curve for Docker debugging (offset by improved reliability)
+- Slower iteration vs local Python (mitigated by volume mounts for code hot-reloading)
+
+#### Package Management Strategy
+**Decision: Use `uv` instead of pip/poetry/pipenv**
+
+**Rationale:**
+1. **Speed**: uv is 10-100x faster than pip for dependency resolution and installation
+2. **Modern Tooling**: Built by Astral (creators of Ruff), designed for Python 3.11+ ecosystem
+3. **Lock File Support**: `uv.lock` ensures reproducible builds across environments
+4. **Docker Optimization**: Faster Docker image builds critical for iterative development
+5. **Single Tool**: Replaces pip, pip-tools, and virtualenv with one command
+
+**Implementation Rules:**
+- `uv pip compile` generates `requirements.txt` from `pyproject.toml`
+- Docker images use `uv pip install` for dependency installation
+- `uv.lock` committed to version control for reproducibility
+- Never use `pip install` directly (always through uv)
+
+**Trade-offs Accepted:**
+- Newer tool with smaller community vs pip/poetry (acceptable for personal project)
+- Team members must install uv (minimal friction, single binary install)
+
+#### Visualization Strategy
+**Decision: Grafana for dashboards instead of custom web app (React/Next.js)**
+
+**Rationale:**
+1. **Time-to-Value**: Pre-built visualization components vs building charting from scratch
+2. **SQL Native**: Grafana queries PostgreSQL directly - no API layer needed
+3. **Dashboard Management**: Export/import JSON dashboards for version control
+4. **Zero Frontend Code**: Focus development effort on ETL pipeline, not UI
+5. **Battle-Tested**: Grafana is production-grade with extensive time-series support
+
+**Implementation Rules:**
+- Grafana connects to PostgreSQL via read-only user (security boundary)
+- Dashboard definitions stored as JSON in `/grafana/dashboards/` directory
+- Use PostgreSQL views for complex aggregations (created via Alembic)
+- Custom panels only if built-in panels insufficient
+
+**Trade-offs Accepted:**
+- Limited customization vs custom React app (acceptable for personal dashboards)
+- Grafana learning curve (offset by avoiding full-stack development)
+- No mobile app (Grafana web UI responsive enough for personal use)
+
+#### Repository Pattern Strategy
+**Decision: Repository Pattern instead of direct ORM access in business logic**
+
+**Rationale:**
+1. **Testability**: Mock repository interfaces in unit tests without database
+2. **Abstraction**: Business logic doesn't know about SQLAlchemy - easier to refactor
+3. **Single Responsibility**: Repositories handle data access, services handle business rules
+4. **Query Reusability**: Common queries (e.g., "find duplicate transactions") centralized
+5. **Migration Safety**: If database schema changes, only repositories need updates
+
+**Implementation Rules:**
+- Define repository interfaces (abstract base classes)
+- Implement concrete repositories using SQLAlchemy sessions
+- Business logic depends on repository interfaces, not implementations
+- One repository per aggregate root (e.g., `TransactionRepository`, `AccountRepository`)
+- Repositories return domain models, not SQLAlchemy models (if domain layer exists)
+
+**Trade-offs Accepted:**
+- More boilerplate vs direct ORM usage (justified by testability gains)
+- Indirection layer (acceptable for cleaner architecture)
+
+#### Testing Strategy Justification
+**Decision: Pytest with fixture-based testing and 80% coverage minimum**
+
+**Rationale:**
+1. **Financial Correctness**: Money calculations must be tested exhaustively - pytest fixtures allow data-driven tests
+2. **Regression Prevention**: Bank statement formats change - comprehensive tests catch breakage early
+3. **Confidence in Refactoring**: 80% coverage enables safe code improvements without fear
+4. **Integration Testing**: Test containers (pytest-docker) verify database operations in isolation
+5. **CI/CD Gate**: Tests as quality gate prevent broken code from merging
+
+**Implementation Rules:**
+- Unit tests for parsing logic (no database/filesystem dependencies)
+- Integration tests for repository layer (test PostgreSQL container)
+- Fixture files: anonymized bank PDFs representing different institutions
+- Coverage checked in CI - PRs failing <80% blocked from merge
+- Mock external dependencies (Docling API calls, filesystem operations)
+
+**Trade-offs Accepted:**
+- Time investment writing tests (essential for financial data correctness)
+- Slower CI builds with integration tests (necessary for confidence)
 
 ### Testing Strategy
 - **Unit Tests**: All parsing logic, data transformations, and business rules
