@@ -47,6 +47,8 @@ Primary goal: Create a self-hosted, privacy-focused alternative to cloud-based f
 
 ### Strategy & Design Decisions
 
+> **Note**: Each strategy below provides rationale and implementation rules. For detailed analysis including code examples and trade-off discussions, see the design strategy documents linked in the [Additional Resources](#additional-resources) section.
+
 #### Database Access Strategy
 **Decision: Use SQLAlchemy ORM exclusively - NO raw SQL queries**
 
@@ -113,6 +115,8 @@ Primary goal: Create a self-hosted, privacy-focused alternative to cloud-based f
 - Learning curve for Docker debugging (offset by improved reliability)
 - Slower iteration vs local Python (mitigated by volume mounts for code hot-reloading)
 
+**See Also**: [Docker vs Podman Analysis](../docs/design_strategies/docker_v_podman_strategy.md) for detailed comparison and why Docker was chosen over Podman for this project.
+
 #### Package Management Strategy
 **Decision: Use `uv` instead of pip/poetry/pipenv**
 
@@ -174,6 +178,8 @@ Primary goal: Create a self-hosted, privacy-focused alternative to cloud-based f
 **Trade-offs Accepted:**
 - More boilerplate vs direct ORM usage (justified by testability gains)
 - Indirection layer (acceptable for cleaner architecture)
+
+**See Also**: [Repository Pattern Deep Dive](../docs/design_strategies/repository_pattern_strategy.md) for code examples showing testability benefits, query reusability patterns, and specific problems solved for this finance project.
 
 #### Testing Strategy Justification
 **Decision: Pytest with fixture-based testing and 80% coverage minimum**
@@ -304,3 +310,13 @@ Primary goal: Create a self-hosted, privacy-focused alternative to cloud-based f
 ### Optional Dependencies
 - **Monitoring**: Prometheus (if Grafana metrics needed)
 - **Scheduler**: APScheduler (for automated processing)
+
+## Additional Resources
+
+### Design Strategy Documents
+For in-depth explanations, code examples, and trade-off analysis for architectural decisions:
+
+- **[Repository Pattern Strategy](../docs/design_strategies/repository_pattern_strategy.md)** - Why repository pattern is essential for testability, with before/after code examples demonstrating fast unit tests, query reusability, and clean separation of concerns
+- **[Docker vs Podman Decision](../docs/design_strategies/docker_v_podman_strategy.md)** - Analysis of containerization choices comparing Docker Compose vs Podman, with rationale for Docker selection based on macOS development, Grafana compatibility, and community support
+
+These documents provide the "why" behind major architectural decisions with concrete examples and use-case specific reasoning.
