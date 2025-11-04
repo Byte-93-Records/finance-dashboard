@@ -19,8 +19,9 @@ Finance Dashboard is a **privacy-first alternative** to cloud-based finance apps
 - 🔒 Zero external API calls - your data never leaves your machine
 
 ## 🏗️ Architecture
+
 ```mermaid
-flowchart TD
+flowchart LR
    A[📄 PDF Statements<br/>/data/pdfs/] --> B[🔄 pdf_processor<br/>Docling Extraction]
    B --> C[📋 CSV Files<br/>/data/csv/]
    C --> D[✅ csv_parser<br/>Validation]
@@ -28,10 +29,14 @@ flowchart TD
    E --> F[(PostgreSQL 18<br/>Transaction Storage)]
    F --> G[📊 Grafana<br/>Dashboards]
    
-   style A fill:#e1f5ff
-   style C fill:#fff4e1
-   style F fill:#e8f5e9
-   style G fill:#f3e5f5
+   style A fill:#4FC3F7,stroke:#0277BD,stroke-width:2px,color:#000
+   style B fill:#81C784,stroke:#2E7D32,stroke-width:2px,color:#000
+   style C fill:#FFB74D,stroke:#E65100,stroke-width:2px,color:#000
+   style D fill:#BA68C8,stroke:#6A1B9A,stroke-width:2px,color:#fff
+   style E fill:#64B5F6,stroke:#1565C0,stroke-width:2px,color:#000
+   style F fill:#4DB6AC,stroke:#00695C,stroke-width:2px,color:#000
+   style G fill:#9575CD,stroke:#4527A0,stroke-width:2px,color:#fff
+```
 ```
 
 ## 🚀 Quick Start
