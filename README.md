@@ -19,27 +19,19 @@ Finance Dashboard is a **privacy-first alternative** to cloud-based finance apps
 - 🔒 Zero external API calls - your data never leaves your machine
 
 ## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                     ETL Pipeline                        │
-├─────────────────────────────────────────────────────────┤
-│  Extract (PDF) → Transform (CSV) → Load (PostgreSQL)   │
-└─────────────────────────────────────────────────────────┘
-
-/data/pdfs/        →  pdf_processor/  →  /data/csv/
-   (Input)              (Docling)         (Staging)
-                            ↓
-                      csv_parser/
-                    (Validation)
-                            ↓
-                      database/
-                   (SQLAlchemy ORM)
-                            ↓
-                    PostgreSQL 18
-                            ↓
-                       Grafana
-                    (Dashboards)
+```mermaid
+flowchart TD
+   A[📄 PDF Statements<br/>/data/pdfs/] --> B[🔄 pdf_processor<br/>Docling Extraction]
+   B --> C[📋 CSV Files<br/>/data/csv/]
+   C --> D[✅ csv_parser<br/>Validation]
+   D --> E[🗄️ database<br/>SQLAlchemy ORM]
+   E --> F[(PostgreSQL 18<br/>Transaction Storage)]
+   F --> G[📊 Grafana<br/>Dashboards]
+   
+   style A fill:#e1f5ff
+   style C fill:#fff4e1
+   style F fill:#e8f5e9
+   style G fill:#f3e5f5
 ```
 
 ## 🚀 Quick Start
