@@ -37,7 +37,6 @@ flowchart LR
    style F fill:#4DB6AC,stroke:#00695C,stroke-width:2px,color:#000
    style G fill:#9575CD,stroke:#4527A0,stroke-width:2px,color:#fff
 ```
-```
 
 ## 🚀 Quick Start
 
