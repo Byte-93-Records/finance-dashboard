@@ -6,7 +6,7 @@
 The ETL pipeline SHALL incorporate PDF extraction as the initial Extract phase before CSV parsing and database loading.
 
 #### Scenario: Complete ETL flow with PDF input
-- **GIVEN** bank statement PDFs in `/data/pdfs/` directory
+- **GIVEN** financial statement PDFs in `/data/pdfs/` directory
 - **WHEN** ETL pipeline executes
 - **THEN** Extract phase SHALL convert PDFs to CSVs in `/data/csv/`
 - **AND** Transform phase SHALL parse and validate CSV data
@@ -58,7 +58,7 @@ The ETL pipeline SHALL follow a three-phase architecture: Extract (PDF) → Tran
 - **AND** failure in any phase SHALL halt remaining phases for that file
 
 ### Requirement: Input Data Format
-The ETL pipeline SHALL accept bank statement PDFs as primary input format, with CSVs supported for legacy/manual workflows.
+The ETL pipeline SHALL accept financial statement PDFs as primary input format, with CSVs supported for legacy/manual workflows.
 
 **Previous behavior:** Only CSV files were accepted as input  
 **New behavior:** PDFs are primary input, CSVs in `/data/csv/` can still be processed directly (skipping Extract phase)

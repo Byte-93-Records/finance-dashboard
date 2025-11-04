@@ -1,14 +1,14 @@
 # Project Context
 
 ## Purpose
-Build a simplified personal finance tracking system that converts bank statement PDFs into structured data for visualization and analysis. The system will:
-- Extract transaction data from PDF bank statements using Docling
+Build a simplified personal finance tracking system that converts financial statement PDFs (bank statements, credit card statements, brokerage statements) into structured data for visualization and analysis. The system will:
+- Extract transaction data from PDF financial statements using Docling
 - Convert PDFs to CSV format for processing
 - Store financial transactions in a local PostgreSQL database
 - Visualize financial data through Grafana dashboards
 - Run entirely in containerized Docker environment for easy deployment
 
-Primary goal: Create a self-hosted, privacy-focused alternative to cloud-based finance apps, processing locally stored bank statements without external API dependencies.
+Primary goal: Create a self-hosted, privacy-focused alternative to cloud-based finance apps, processing locally stored financial statements without external API dependencies.
 
 ## Tech Stack
 - **Language**: Python 3.11+
@@ -77,9 +77,9 @@ Primary goal: Create a self-hosted, privacy-focused alternative to cloud-based f
 
 **Rationale:**
 1. **Modern Architecture**: Docling is specifically designed for structured document extraction with ML-based layout understanding
-2. **Bank Statement Complexity**: Bank PDFs have complex layouts with tables, multiple columns, headers/footers - Docling handles these better than regex-based parsers
+2. **Financial Statement Complexity**: Financial PDFs (bank statements, credit card bills, brokerage reports) have complex layouts with tables, multiple columns, headers/footers - Docling handles these better than regex-based parsers
 3. **CSV Output**: Direct PDF-to-CSV conversion aligns with ETL pipeline, avoiding custom parsing logic
-4. **Maintenance Burden**: Traditional PDF libraries require bank-specific parsers for each institution - Docling generalizes better
+4. **Maintenance Burden**: Traditional PDF libraries require institution-specific parsers for each bank, credit card issuer, or brokerage - Docling generalizes better
 5. **Future-Proofing**: ML-based extraction adapts to layout changes without code modifications
 
 **Implementation Rules:**
@@ -91,7 +91,7 @@ Primary goal: Create a self-hosted, privacy-focused alternative to cloud-based f
 **Trade-offs Accepted:**
 - Dependency on Docling's extraction accuracy (mitigated by validation layer)
 - Heavier dependency than simple PDF libraries (acceptable for functionality gained)
-- May require Docling configuration per bank format (still less code than custom parsers)
+- May require Docling configuration per statement format (still less code than custom parsers)
 
 #### Containerization Strategy
 **Decision: Docker Compose for entire stack - no local Python/PostgreSQL installations**
@@ -235,14 +235,18 @@ Primary goal: Create a self-hosted, privacy-focused alternative to cloud-based f
 
 ## Domain Context
 
-### Banking Domain Knowledge
-- **Bank Statements**: PDFs contain: transaction date, posting date, description, debit/credit amounts, running balance
+### Financial Domain Knowledge
+- **Financial Statements**: PDFs contain: transaction date, posting date, description, debit/credit amounts, running balance
+- **Statement Types**:
+  - **Bank Statements**: Checking, savings, money market accounts
+  - **Credit Card Statements**: Monthly bills with purchases, payments, fees
+  - **Brokerage Statements**: Stock/ETF trades, dividends, capital gains, fees
 - **Transaction Types**: 
-  - Income (deposits, transfers in, interest)
-  - Expenses (withdrawals, purchases, fees)
+  - Income (deposits, transfers in, interest, dividends)
+  - Expenses (withdrawals, purchases, fees, commissions)
   - Transfers (between accounts)
-- **Account Types**: Checking, savings, credit card, loan accounts
-- **Statement Formats**: Each bank has unique PDF layouts (Chase, Bank of America, Wells Fargo, etc.)
+- **Account Types**: Checking, savings, credit card, brokerage, loan accounts
+- **Statement Formats**: Each financial institution has unique PDF layouts (Chase, Amex, Fidelity, etc.)
 - **Data Challenges**: 
   - Inconsistent date formats
   - Multi-line descriptions

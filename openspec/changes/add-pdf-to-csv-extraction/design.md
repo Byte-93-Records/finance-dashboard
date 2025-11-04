@@ -1,7 +1,7 @@
 # Design: PDF to CSV Extraction
 
 ## Context
-The finance dashboard ETL pipeline begins with bank statement PDFs that need structured extraction. Traditional PDF parsing libraries (PyPDF2, pdfplumber) require bank-specific regex patterns and brittle table extraction logic. Bank statement PDFs vary significantly by institution (Chase, Bank of America, Wells Fargo, etc.) with complex layouts including multi-column tables, headers/footers, and inconsistent formatting.
+The finance dashboard ETL pipeline begins with financial statement PDFs that need structured extraction. Traditional PDF parsing libraries (PyPDF2, pdfplumber) require institution-specific regex patterns and brittle table extraction logic. Financial statement PDFs vary significantly by institution and type (Chase bank statements, American Express credit card bills, Fidelity brokerage statements, etc.) with complex layouts including multi-column tables, headers/footers, and inconsistent formatting.
 
 **Constraints:**
 - Privacy-first: No external API calls, all processing must be local
@@ -11,17 +11,17 @@ The finance dashboard ETL pipeline begins with bank statement PDFs that need str
 - Python 3.11+ requirement
 
 **Stakeholders:**
-- End user: Expects reliable extraction from any US bank statement PDF
+- End user: Expects reliable extraction from any US financial statement PDF (bank, credit card, brokerage)
 - Downstream systems: CSV parser and database ingestion depend on consistent CSV schema
 
 ## Goals / Non-Goals
 
 **Goals:**
-- Extract transaction data from bank statement PDFs into standardized CSV format
-- Handle multiple bank statement layouts without custom per-bank parsers
+- Extract transaction data from financial statement PDFs (bank, credit card, brokerage) into standardized CSV format
+- Handle multiple statement types and layouts without custom per-institution parsers
 - Provide clear error messages when extraction fails
 - Organize files into appropriate directories based on processing outcome
-- Enable testability with fixture PDFs from various banks
+- Enable testability with fixture PDFs from various financial institutions
 
 **Non-Goals:**
 - OCR for scanned/image-based PDFs (assume text-based PDFs only for v1)
@@ -47,7 +47,7 @@ The finance dashboard ETL pipeline begins with bank statement PDFs that need str
 3. **Camelot** - Strong table extraction but requires Java dependency (Tabula), harder to containerize
 4. **Custom regex parsers** - Brittle, maintenance nightmare across bank formats
 
-**Why Docling wins:** Balances extraction quality with maintenance burden. ML-based approach generalizes better across bank formats.
+**Why Docling wins:** Balances extraction quality with maintenance burden. ML-based approach generalizes better across financial statement formats (bank, credit card, brokerage).
 
 ### Decision 2: File System Organization
 **Choice:** Separate directories for input, intermediate, processed, and failed files
@@ -141,10 +141,10 @@ pdf_processor/
 ## Risks / Trade-offs
 
 ### Risk 1: Docling Extraction Accuracy
-**Risk:** Docling may misinterpret complex PDF layouts (merged cells, split transactions)
+**Risk:** Docling may misinterpret complex PDF layouts (merged cells, split transactions, varying statement formats)
 
 **Mitigation:**
-- Comprehensive test suite with real bank PDFs from 5+ institutions
+- Comprehensive test suite with real financial statements from 5+ institutions (banks, credit card issuers, brokerages)
 - Validation layer catches extraction errors before database
 - Failed PDFs logged for manual review and pattern analysis
 - Iterative Docling configuration tuning based on failure patterns
@@ -159,7 +159,7 @@ pdf_processor/
 - Large files that fail moved to `/data/failed/` for investigation
 
 ### Risk 3: CSV Schema Evolution
-**Risk:** Bank statement formats change, requiring schema updates
+**Risk:** Financial statement formats change, requiring schema updates
 
 **Mitigation:**
 - Pydantic models enable easy schema versioning
@@ -195,10 +195,10 @@ pdf_processor/
 5. Add volume mounts for `/data/` in `docker-compose.yml`
 
 **Testing Approach:**
-1. Create test fixtures: 5-10 anonymized bank PDFs (Chase, BoA, Wells Fargo, Citi, etc.)
+1. Create test fixtures: 5-10 anonymized financial statement PDFs (Chase/BoA bank statements, Amex/Visa credit cards, Fidelity/Schwab brokerage)
 2. Unit tests: Validator logic, file handler operations
 3. Integration tests: End-to-end PDF → CSV → validation flow
-4. Fixture-based tests: Verify extraction accuracy per bank format
+4. Fixture-based tests: Verify extraction accuracy per institution and statement type
 
 **Rollback:**
 - No database changes in this phase (pure file processing)

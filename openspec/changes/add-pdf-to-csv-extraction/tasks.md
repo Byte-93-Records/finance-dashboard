@@ -20,7 +20,7 @@
 ## 3. PDF Extraction
 - [ ] 3.1 Implement `extractor.py` with PDFExtractor class
 - [ ] 3.2 Integrate Docling library for PDF-to-CSV conversion
-- [ ] 3.3 Configure Docling for bank statement table extraction
+- [ ] 3.3 Configure Docling for financial statement table extraction
 - [ ] 3.4 Implement `extract(pdf_path: Path) -> Path` method
 - [ ] 3.5 Add timeout handling (30 seconds per PDF)
 - [ ] 3.6 Add memory limit error handling
@@ -44,7 +44,10 @@
 
 ## 6. Testing
 - [ ] 6.1 Create `tests/pdf_processor/` directory structure
-- [ ] 6.2 Collect 5-10 anonymized bank statement PDFs (Chase, BoA, Wells Fargo, Citi, etc.)
+- [ ] 6.2 Collect 9-15 anonymized financial statement PDFs:
+  - [ ] 6.2.1 Bank statements (Chase, BoA, Wells Fargo, Citi, etc.)
+  - [ ] 6.2.2 Credit card statements (Amex, Visa/MC, Discover, Capital One)
+  - [ ] 6.2.3 Brokerage statements (Fidelity, Schwab, TD Ameritrade, E*TRADE)
 - [ ] 6.3 Write unit tests for CSVValidator (valid/invalid schemas)
 - [ ] 6.4 Write unit tests for FileHandler (file operations, error cases)
 - [ ] 6.5 Write integration tests for PDFExtractor with fixture PDFs
@@ -84,7 +87,7 @@
 
 ## 10. Validation & Deployment
 - [ ] 10.1 Run full test suite and verify all tests pass
-- [ ] 10.2 Test with real bank statement PDFs (at least 3 different banks)
+- [ ] 10.2 Test with real financial statement PDFs (at least 3 banks, 2 credit cards, 2 brokerages)
 - [ ] 10.3 Verify failed PDFs move to `/data/failed/` with error logs
 - [ ] 10.4 Verify successful PDFs move to `/data/processed/`
 - [ ] 10.5 Verify CSVs in `/data/csv/` match expected schema

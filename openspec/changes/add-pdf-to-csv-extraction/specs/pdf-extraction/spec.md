@@ -2,11 +2,11 @@
 
 ## ADDED Requirements
 
-### Requirement: Extract Transactions from PDF Bank Statements
-The system SHALL extract transaction data from bank statement PDFs and convert them into standardized CSV format using Docling library.
+### Requirement: Extract Transactions from PDF Financial Statements
+The system SHALL extract transaction data from financial statement PDFs (bank statements, credit card statements, brokerage statements) and convert them into standardized CSV format using Docling library.
 
 #### Scenario: Successful PDF extraction
-- **GIVEN** a valid text-based bank statement PDF in `/data/pdfs/` directory
+- **GIVEN** a valid text-based financial statement PDF in `/data/pdfs/` directory
 - **WHEN** the PDF processor executes extraction
 - **THEN** a CSV file SHALL be created in `/data/csv/` with required columns
 - **AND** the CSV SHALL contain all transactions from the PDF
@@ -22,7 +22,7 @@ The system SHALL extract transaction data from bank statement PDFs and convert t
 - **AND** the error log SHALL contain extraction failure details
 
 #### Scenario: Large PDF handling
-- **GIVEN** a bank statement PDF larger than 10MB but under 50MB
+- **GIVEN** a financial statement PDF larger than 10MB but under 50MB
 - **WHEN** the PDF processor executes extraction
 - **THEN** extraction SHALL complete within 30 seconds timeout
 - **AND** extraction SHALL handle the file without memory errors
@@ -131,15 +131,15 @@ The system SHALL validate CSV output against the required schema before allowing
 - **THEN** the CSV SHALL remain in `/data/csv/` for ingestion
 - **AND** validation success SHALL be logged
 
-### Requirement: Support Multiple Bank Statement Formats
-The system SHALL handle bank statement PDFs from different financial institutions without requiring custom parsers per bank.
+### Requirement: Support Multiple Financial Statement Formats
+The system SHALL handle financial statement PDFs from different institutions and statement types without requiring custom parsers per institution.
 
-#### Scenario: Multi-bank extraction
-- **GIVEN** PDF bank statements from Chase, Bank of America, and Wells Fargo
+#### Scenario: Multi-institution extraction
+- **GIVEN** PDF statements from Chase Bank, American Express credit card, and Fidelity brokerage
 - **WHEN** extraction executes on each PDF
 - **THEN** all PDFs SHALL be extracted using the same Docling-based extractor
 - **AND** CSV outputs SHALL conform to the same standardized schema
-- **AND** no bank-specific code branches SHALL be required
+- **AND** no institution-specific code branches SHALL be required
 
 ### Requirement: Idempotent Processing
 The system SHALL handle re-processing of the same PDF without causing duplicate records or errors.
