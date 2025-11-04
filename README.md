@@ -47,7 +47,9 @@ Finance Dashboard is a **privacy-first alternative** to cloud-based finance apps
 ### Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop) (20+) or Docker Engine + Docker Compose (v2.0+)
-- macOS, Linux, or Windows with WSL2
+- macOS or Linux
+
+> **Note for Windows Users:** This project is optimized for macOS and Linux environments. Windows users should use [Windows Subsystem for Linux (WSL2)](https://docs.microsoft.com/en-us/windows/wsl/install) to run all commands and scripts without compatibility issues.
 
 ### Installation
 
@@ -196,9 +198,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv venv
 
 # Activate virtual environment
-source .venv/bin/activate  # Linux/macOS
-# or
-.venv\Scripts\activate     # Windows
+source .venv/bin/activate
 
 # Install dependencies
 uv pip install -e ".[dev]"
