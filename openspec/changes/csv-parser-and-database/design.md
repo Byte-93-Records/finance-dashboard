@@ -255,7 +255,7 @@ csv_parser/
 ├── __init__.py
 ├── parser.py           # CSVParser class (Pydantic validation)
 ├── models.py           # Pydantic models (TransactionRow)
-├── normalizer.py       # Description normalization for hashing
+├── hasher.py           # TransactionHasher (SHA-256 for deduplication)
 └── exceptions.py       # ValidationError, ParsingError
 
 database/
@@ -267,12 +267,6 @@ database/
     ├── env.py
     ├── script.py.mako
     └── versions/
-
-ingestion/
-├── __init__.py
-├── orchestrator.py     # IngestionOrchestrator (ETL coordination)
-├── hasher.py          # TransactionHasher (SHA-256 generation)
-└── exceptions.py      # IngestionError
 ```
 
 ### Core Classes
@@ -283,16 +277,11 @@ ingestion/
 - **Error Handling**: Raises `ValidationError` with row-level details
 - **Validation**: Uses Pydantic models for type checking, date parsing, decimal precision
 
-**TransactionHasher** (`ingestion/hasher.py`):
-- **Responsibility**: Generate deterministic SHA-256 hashes for deduplication
+**TransactionHasher** (`csv_parser/hasher.py`):
+- **Responsibility**: Generate deterministic SHA-256 hashes for transaction deduplication
 - **Methods**: `hash_transaction(account_id: int, date: date, amount: Decimal, description: str) -> str`
 - **Normalization**: Lowercase description, strip whitespace before hashing
-
-**IngestionOrchestrator** (`ingestion/orchestrator.py`):
-- **Responsibility**: Coordinate CSV parsing → database loading
-- **Methods**: `ingest_csv(csv_path: Path, account_id: int) -> IngestionResult`
-- **Error Handling**: Rollback database transaction on validation failures
-- **Deduplication**: Check transaction hashes before insert
+- **Usage**: Used by database loading to check for duplicate transactions
 
 **AccountRepository / TransactionRepository** (`database/repositories.py`):
 - **Responsibility**: Database CRUD operations via SQLAlchemy ORM
@@ -301,7 +290,7 @@ ingestion/
 
 ### Processing Flow
 ```
-1. Scan /data/csv/ for new CSV files
+1. CSV files available in /data/csv/ (from PDF extraction)
 2. For each CSV:
    a. Parse CSV with CSVParser (Pydantic validation)
    b. Normalize descriptions with TransactionHasher
@@ -309,8 +298,7 @@ ingestion/
    d. Check for existing hashes via TransactionRepository.get_by_hash()
    e. Bulk insert new transactions via TransactionRepository.bulk_create()
    f. Create import log via ImportLogRepository.create()
-   g. Move CSV to /data/processed/ or /data/failed/
-3. Report summary: X transactions imported, Y duplicates skipped, Z errors
+3. CSV processing complete (orchestration handled by separate ingestion module)
 ```
 
 ## Risks / Trade-offs
@@ -395,7 +383,7 @@ ingestion/
 ## Migration Plan
 
 **Initial Setup:**
-1. Create module directories: `csv_parser/`, `database/`, `ingestion/`
+1. Create module directories: `csv_parser/`, `database/`
 2. Add dependencies to `pyproject.toml`:
    - SQLAlchemy >= 2.0
    - Alembic >= 1.13
@@ -430,7 +418,7 @@ ingestion/
 **Rollback Plan:**
 - Database rollback: `alembic downgrade base` (removes all tables)
 - Drop database: `docker-compose down -v` (removes PostgreSQL volume)
-- Remove modules: Delete `csv_parser/`, `database/`, `ingestion/`
+- Remove modules: Delete `csv_parser/`, `database/`
 - Revert dependencies: Remove SQLAlchemy, Alembic, Pydantic from `pyproject.toml`
 - No data loss risk: PDFs preserved in `/data/processed/`, CSVs can be regenerated
 

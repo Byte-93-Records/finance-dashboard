@@ -9,6 +9,8 @@ The ETL pipeline components are complete individually (PDF extraction, CSV parsi
 
 This completes the ETL pipeline: Extract (PDF → CSV) → Transform (CSV parsing) → Load (PostgreSQL) → **Orchestrate (tie it all together)**.
 
+**Dependencies**: This change depends on `csv-parser-and-database` for TransactionHasher (used for deduplication checks).
+
 ## What Changes
 ### Ingestion Orchestrator (`ingestion/orchestrator.py`)
 - Coordinate full ETL pipeline execution

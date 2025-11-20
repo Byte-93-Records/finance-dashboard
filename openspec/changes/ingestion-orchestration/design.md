@@ -129,7 +129,7 @@ finance-import = "ingestion.cli:main"
 ```python
 class IngestionOrchestrator:
     def __init__(self, pdf_extractor, csv_parser, transaction_repo, import_log_repo, file_handler):
-        # Dependency injection
+        # Dependency injection (TransactionHasher imported from csv_parser.hasher)
         
     def process_pending_pdfs(self, account_id: int, dry_run: bool = False) -> IngestionSummary:
         # Scan /data/pdfs/, process each PDF through ETL pipeline

@@ -24,18 +24,12 @@ This completes the ETL pipeline: Extract (PDF → CSV) → Transform (CSV parsin
 - Alembic migrations for schema versioning
 - Repository pattern for data access
 
-### Ingestion Orchestration (`ingestion/`)
-- Orchestrate the full ETL pipeline
-- Coordinate PDF extraction → CSV parsing → database loading
-- Handle errors at each phase
-- Provide summary reporting
-
 ## Impact
-- **Affected specs**: `etl-pipeline` (completes all three phases), `csv-parsing` (new), `database-schema` (new)
+- **Affected specs**: `csv-parsing` (new), `database-schema` (new)
 - **Affected code**: 
-  - New modules: `csv_parser/`, `database/`, `ingestion/`
+  - New modules: `csv_parser/`, `database/`
   - Configuration: Database connection strings, Alembic setup
-  - Dependencies: SQLAlchemy, Alembic, psycopg2
+  - Dependencies: SQLAlchemy, Alembic, Pydantic, psycopg2
 - **External dependencies**: PostgreSQL 18 (via Docker)
 - **Testing**: Unit tests for CSV parsing, integration tests with test database
 
@@ -45,5 +39,4 @@ This completes the ETL pipeline: Extract (PDF → CSV) → Transform (CSV parsin
 3. Implement CSV parser with validation
 4. Implement database models and repositories
 5. Create Alembic migrations
-6. Build ingestion orchestrator
-7. End-to-end testing with sample PDFs
+6. Integration testing with sample CSVs
