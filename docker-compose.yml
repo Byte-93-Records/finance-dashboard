@@ -1,0 +1,37 @@
+services:
+  pdf-processor:
+    build: .
+    volumes:
+      - ./data:/data
+    env_file:
+      - .env
+    environment:
+      - PDF_INPUT_DIR=/data/pdfs
+      - CSV_OUTPUT_DIR=/data/csv
+      - PROCESSED_DIR=/data/processed
+      - FAILED_DIR=/data/failed
+    command: ["python", "-m", "pdf_processor.cli", "process"]
+
+  postgres:
+    image: postgres:18-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=finance
+      - POSTGRES_PASSWORD=finance
+      - POSTGRES_DB=finance_db
+    ports:
+      - "5432:5432"
+
+  grafana:
+    image: grafana/grafana:latest
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  grafana_data:

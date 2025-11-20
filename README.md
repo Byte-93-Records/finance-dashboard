@@ -309,18 +309,23 @@ docker-compose logs -f grafana
    
 2. **Run extraction:**
    ```bash
-   docker-compose exec app python -m pdf_processor.cli process
+   # Using Docker Compose (Recommended)
+   docker compose exec pdf-processor python -m pdf_processor.cli process
+   
+   # Or if running locally
+   python -m pdf_processor.cli process
    ```
+
 3. **Check results:**
-   - Successful: PDFs moved to `data/processed/`
-   - Failed: PDFs moved to `data/failed/` with error logs
-   - CSVs ready in `data/csv/` for ingestion
+   - **Successful**: PDFs moved to `data/processed/`
+   - **Failed**: PDFs moved to `data/failed/` with error logs
+   - **CSVs**: Ready in `data/csv/` for ingestion
 
 ### Viewing Extraction Logs
 
 ```bash
 # View processing summary
-docker-compose logs app | grep "Processing complete"
+docker compose logs pdf-processor | grep "Processing complete"
 
 # View failed extractions
 ls -la data/failed/
