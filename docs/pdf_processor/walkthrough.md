@@ -34,7 +34,7 @@ docker compose up -d
 Place your PDF statements in `data/pdfs/`.
 Then run the processor:
 ```bash
-docker compose exec pdf-processor python -m pdf_processor.cli process
+docker compose run --rm pdf-processor python -m pdf_processor.cli process
 ```
 
 ### 3. Check Results

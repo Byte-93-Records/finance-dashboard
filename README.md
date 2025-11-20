@@ -310,7 +310,7 @@ docker-compose logs -f grafana
 2. **Run extraction:**
    ```bash
    # Using Docker Compose (Recommended)
-   docker compose exec pdf-processor python -m pdf_processor.cli process
+   docker compose run --rm pdf-processor python -m pdf_processor.cli process
    
    # Or if running locally
    python -m pdf_processor.cli process

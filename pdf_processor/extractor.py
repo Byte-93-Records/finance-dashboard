@@ -20,17 +20,9 @@ class PDFExtractor:
         
     def _configure_converter(self) -> DocumentConverter:
         """Configure Docling converter for financial statements."""
-        pipeline_options = PdfPipelineOptions()
-        pipeline_options.do_ocr = False  # Assume text-based PDFs for speed
-        pipeline_options.do_table_structure = True
-        pipeline_options.table_structure_options.mode = TableFormerMode.ACCURATE
-        
-        return DocumentConverter(
-            allowed_formats=[InputFormat.PDF],
-            format_options={
-                InputFormat.PDF: pipeline_options
-            }
-        )
+        """Configure Docling converter for financial statements."""
+        # Use default configuration as it is proven to work
+        return DocumentConverter()
 
     def _timeout_handler(self, signum, frame):
         raise TimeoutError("PDF processing timed out")
@@ -88,6 +80,8 @@ class PDFExtractor:
         except TimeoutError:
             raise ExtractionError(f"Processing timed out after {self.timeout_seconds}s")
         except Exception as e:
+            import traceback
+            logger.error(f"Full extraction error: {traceback.format_exc()}")
             raise ExtractionError(f"Extraction failed: {e}")
         finally:
             signal.alarm(0)  # Disable alarm
