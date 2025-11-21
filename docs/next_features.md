@@ -180,6 +180,38 @@ This document outlines the planned features and improvements for the Finance Das
   - Week-over-week comparison
 - Performance optimizations for large datasets
 
+#### 7. Backup & Restore
+- **Automated Backup Scripts:**
+  ```bash
+  scripts/backup.sh         # Backup PostgreSQL + Grafana
+  scripts/restore.sh        # Restore from backup
+  ```
+- **Backup Components:**
+  - PostgreSQL database dump (SQL format)
+  - Grafana dashboards and settings (JSON export)
+  - Docker volume snapshots
+  - Configuration files (.env, docker-compose.yml)
+- **Storage Options:**
+  - Local backup directory (`backups/YYYY-MM-DD/`)
+  - Cloud storage (S3, Google Drive) integration
+  - Automated daily/weekly backup schedule
+- **Restore Process:**
+  - One-command restore from any backup point
+  - Verification after restore
+  - Support for selective restore (DB only, Grafana only)
+- **Example:**
+  ```bash
+  # Create backup
+  ./scripts/backup.sh
+  # Output: backups/2025-11-20/
+  #   ├── postgres_dump.sql
+  #   ├── grafana_export.json
+  #   └── config_backup.tar.gz
+  
+  # Restore from backup
+  ./scripts/restore.sh backups/2025-11-20/
+  ```
+
 ### Success Metrics
 - ✅ Process 10,000+ transactions without performance degradation
 - ✅ Grafana dashboard load time < 2 seconds
