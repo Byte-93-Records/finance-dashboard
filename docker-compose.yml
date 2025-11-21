@@ -11,6 +11,7 @@ services:
       - PROCESSED_DIR=/data/processed
       - FAILED_DIR=/data/failed
       - DATABASE_URL=postgresql://finance:finance@postgres:5432/finance_db
+      - PDF_TIMEOUT_SECONDS=300
     command: ["python", "-m", "pdf_processor.cli", "process"]
 
   postgres:
