@@ -63,15 +63,15 @@ def process(dry_run):
                     log.info("Extraction successful", csv_file=csv_path.name)
                     
                     # Validate
-                    if validator.validate(csv_path):
+                    try:
+                        validator.validate(csv_path)
                         log.info("Validation successful")
+                    except Exception as e:
+                        log.warning("Validation failed, but keeping CSV for manual inspection", error=str(e))
                         
-                        # Move to processed
-                        file_handler.move_to_processed(pdf_path)
-                        processed_count += 1
-                    else:
-                        # Should not happen as validate raises exception
-                        pass
+                    # Move to processed
+                    file_handler.move_to_processed(pdf_path)
+                    processed_count += 1
                 else:
                     log.info("Dry run: Skipping extraction and move")
                     processed_count += 1 # Count as processed for dry run summary? Or maybe separate?

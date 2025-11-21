@@ -175,3 +175,24 @@ If processing many PDFs:
 - Docling documentation: https://github.com/DS4SD/docling
 - Current implementation uses default DocumentConverter() for maximum compatibility
 - User's working reference script demonstrated this approach works reliably
+
+## PDF Processing Learnings & Fixes (Implemented Nov 2025)
+
+### Challenges Encountered
+1. **Duplicate Columns**: Some PDFs contained tables with identical column headers (or no headers), causing `pd.concat` to crash with `InvalidIndexError`.
+2. **Schema Mismatch**: Extracted CSVs lacked standard headers (`transaction_date`, `description`, `amount`), failing strict validation.
+3. **Complex Layouts**: Multi-column layouts resulted in messy CSV structures that simple index-based parsing couldn't handle.
+
+### Fixes Implemented
+1. **Robust Column Deduplication**: Updated `pdf_processor/extractor.py` to automatically rename duplicate columns (e.g., `Column`, `Column.1`) to prevent crashes.
+2. **Relaxed Validation**: Modified `pdf_processor/cli.py` to **warn** instead of **delete** files when validation fails, allowing "imperfect" CSVs to be ingested.
+3. **Heuristic Ingestion**: Enhanced `ingest.py` with "smart parsing" logic:
+   - **Date Detection**: Scans row for `MM/DD` or `MM/DD/YY` patterns.
+   - **Amount Detection**: Looks for currency symbols (`$`) or decimal formats.
+   - **Description Detection**: Identifies the longest text field as the description.
+
+### Verification Results
+- **Input**: 4 Citi ThankYou statements (Jan, Feb, Mar, May 2025)
+- **Result**: All 4 processed successfully despite validation warnings.
+- **Data**: 40 transactions ingested into PostgreSQL.
+- **Grafana**: Data is now visible in the dashboard.

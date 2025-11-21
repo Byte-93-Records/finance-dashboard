@@ -10,6 +10,7 @@ services:
       - CSV_OUTPUT_DIR=/data/csv
       - PROCESSED_DIR=/data/processed
       - FAILED_DIR=/data/failed
+      - DATABASE_URL=postgresql://finance:finance@postgres:5432/finance_db
     command: ["python", "-m", "pdf_processor.cli", "process"]
 
   postgres:
@@ -27,6 +28,11 @@ services:
     image: grafana/grafana:latest
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_DATABASE_PASSWORD=finance
     ports:
       - "3000:3000"
     depends_on:

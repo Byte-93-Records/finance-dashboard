@@ -60,6 +60,25 @@ class PDFExtractor:
                 # Convert to pandas DataFrame
                 df = table.export_to_dataframe()
                 if not df.empty:
+                    # Deduplicate columns if necessary
+                    if not df.columns.is_unique:
+                        # Create unique column names by appending numbers
+                        cols = pd.Series(df.columns)
+                        for dup in df.columns[df.columns.duplicated(keep=False)]:
+                            cols[df.columns.get_loc(dup)] = [dup + '.' + str(d_idx)  
+                                if d_idx != 0 else dup 
+                                for d_idx in range(df.columns.get_loc(dup).sum() if hasattr(df.columns.get_loc(dup), 'sum') else 1)]
+                        # Simpler approach: just use range-based names for duplicates
+                        new_cols = []
+                        seen = {}
+                        for col in df.columns:
+                            if col in seen:
+                                seen[col] += 1
+                                new_cols.append(f"{col}.{seen[col]}")
+                            else:
+                                seen[col] = 0
+                                new_cols.append(col)
+                        df.columns = new_cols
                     tables.append(df)
             
             if not tables:
