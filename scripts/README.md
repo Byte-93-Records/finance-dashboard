@@ -6,7 +6,7 @@
 
 **What it does:**
 1. ✅ Starts PostgreSQL and Grafana containers
-2. ✅ Processes all PDFs in `data/pdfs/` to CSV
+2. ✅ Processes all PDFs in `data/pdfs/` to CSV (or skip if using direct CSV exports)
 3. ✅ Ingests all CSVs to PostgreSQL database
 4. ✅ Verifies data was loaded
 5. ✅ Shows you how to access Grafana and database
@@ -17,12 +17,22 @@
 ```
 
 **Before running:**
-- Place your PDF bank statements in `data/pdfs/`
+- **Option 1:** Place PDF statements in `data/pdfs/` (auto-converts to CSV)
+- **Option 2:** Place CSV exports directly in `data/csv/` (recommended for Amex)
 - Make sure Docker is running
+- Ensure `.env` file exists with proper credentials
 
 **After running:**
-- View dashboards at http://localhost:3000 (admin/admin)
-- Check database: `docker compose exec postgres psql -U finance -d finance_db`
+- **Grafana:** http://localhost:3000
+  - Username: `admin`
+  - Password: Check `GF_SECURITY_ADMIN_PASSWORD` in `.env` (default: `grafana123`)
+- **Database:** `docker compose exec postgres psql -U finance -d finance_db`
+
+**Filename Format:**
+Name files as: `{bank}_{card}_{month}_{year}.{pdf|csv}`
+- Example: `citi_thankyou_01_2025.pdf`
+- Example: `amex_bluecash_all_2024.csv`
+- See `docs/filename-format.md` for details
 
 ---
 
