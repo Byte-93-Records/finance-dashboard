@@ -1,17 +1,30 @@
 {
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 5,
   "links": [],
   "panels": [
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_FINANCE_POSTGRESQL}"
+        "uid": "PA07283B22CEA3051"
       },
       "fieldConfig": {
         "defaults": {
@@ -29,7 +42,8 @@
             ]
           },
           "unit": "currencyUSD"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -43,21 +57,24 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "values": false,
           "calcs": [
             "sum"
           ],
-          "fields": ""
+          "fields": "",
+          "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_FINANCE_POSTGRESQL}"
+            "uid": "PA07283B22CEA3051"
           },
           "editorMode": "code",
           "format": "table",
@@ -89,7 +106,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_FINANCE_POSTGRESQL}"
+        "uid": "PA07283B22CEA3051"
       },
       "fieldConfig": {
         "defaults": {
@@ -107,7 +124,8 @@
             ]
           },
           "unit": "currencyUSD"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -121,21 +139,24 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "values": false,
           "calcs": [
             "sum"
           ],
-          "fields": ""
+          "fields": "",
+          "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_FINANCE_POSTGRESQL}"
+            "uid": "PA07283B22CEA3051"
           },
           "editorMode": "code",
           "format": "table",
@@ -150,7 +171,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_FINANCE_POSTGRESQL}"
+        "uid": "PA07283B22CEA3051"
       },
       "fieldConfig": {
         "defaults": {
@@ -167,7 +188,8 @@
               }
             ]
           }
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -181,21 +203,24 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
-          "values": false,
           "calcs": [
             "lastNotNull"
           ],
-          "fields": ""
+          "fields": "",
+          "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_FINANCE_POSTGRESQL}"
+            "uid": "PA07283B22CEA3051"
           },
           "editorMode": "code",
           "format": "table",
@@ -210,7 +235,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_FINANCE_POSTGRESQL}"
+        "uid": "PA07283B22CEA3051"
       },
       "fieldConfig": {
         "defaults": {
@@ -268,22 +293,39 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "transaction_date"
+            "displayName": "amount"
           }
         ]
       },
-      "pluginVersion": "10.0.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_FINANCE_POSTGRESQL}"
+            "uid": "PA07283B22CEA3051"
           },
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  t.transaction_date,\n  a.bank_name,\n  a.card_name,\n  t.description,\n  t.amount,\n  t.transaction_type\nFROM transactions t\nJOIN accounts a ON t.account_id = a.id\nWHERE t.transaction_type = 'credit'\nORDER BY t.transaction_date DESC\nLIMIT 100;",
-          "refId": "A"
+          "rawSql": "SELECT \n  t.transaction_date,\n  a.bank_name,\n  a.card_name,\n  t.description,\n  t.amount,\n  t.transaction_type\nFROM transactions t\nJOIN accounts a ON t.account_id = a.id\nWHERE t.transaction_type = 'credit'\nORDER BY t.transaction_date DESC\nLIMIT 500;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
         }
       ],
       "title": "Recent Transactions",
@@ -292,7 +334,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_FINANCE_POSTGRESQL}"
+        "uid": "PA07283B22CEA3051"
       },
       "fieldConfig": {
         "defaults": {
@@ -306,13 +348,14 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "bars",
             "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
@@ -342,7 +385,8 @@
             ]
           },
           "unit": "currencyUSD"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 9,
@@ -363,11 +407,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_FINANCE_POSTGRESQL}"
+            "uid": "PA07283B22CEA3051"
           },
           "editorMode": "code",
           "format": "table",
@@ -380,7 +425,9 @@
       "type": "timeseries"
     }
   ],
-  "schemaVersion": 39,
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 40,
   "tags": [
     "finance"
   ],
@@ -388,13 +435,13 @@
     "list": []
   },
   "time": {
-    "from": "now-90d",
-    "to": "now"
+    "from": "2024-01-01T08:00:00.000Z",
+    "to": "2025-01-01T07:59:59.000Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Finance Dashboard",
   "uid": "finance-overview",
-  "version": 1,
+  "version": 5,
   "weekStart": ""
 }
