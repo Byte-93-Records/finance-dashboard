@@ -1,5 +1,25 @@
 # Finance Dashboard Scripts
 
+## 📁 Directory Structure
+
+This directory contains all operational scripts, organized by purpose:
+
+- **`analytics/`** - Data analysis and reporting scripts
+  - `extract_metrics.py` - Extract financial metrics from CSV to JSON
+  
+- **`ingestion/`** - Data ingestion workflows
+  - `ingest_data.py` - Main CSV ingestion script for PostgreSQL
+  
+- **`debug/`** - Debugging and troubleshooting utilities
+  - `debug_docling.py` - Debug Docling PDF processor
+  
+- **`maintenance/`** - System maintenance scripts (backup, restore, cleanup)
+  - _Reserved for v0.2 features_
+
+- **`process-and-view.sh`** - All-in-one pipeline script (see below)
+
+---
+
 ## 📜 Available Scripts
 
 ### `process-and-view.sh` - Complete Pipeline
@@ -32,7 +52,7 @@
 Name files as: `{bank}_{card}_{month}_{year}.{pdf|csv}`
 - Example: `citi_thankyou_01_2025.pdf`
 - Example: `amex_bluecash_all_2024.csv`
-- See `docs/filename-format.md` for details
+- See `docs/diataxis/reference/filename-format.md` for details
 
 ---
 
@@ -52,7 +72,7 @@ docker compose run --rm pdf-processor python -m pdf_processor.cli process
 
 ### Ingest CSV to database:
 ```bash
-docker compose run --rm pdf-processor python ingest.py /data/csv/your_file.csv 1
+docker compose run --rm pdf-processor python scripts/ingestion/ingest_data.py /data/csv/your_file.csv 1
 ```
 
 ### Stop services:
