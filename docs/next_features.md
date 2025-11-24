@@ -212,6 +212,55 @@ This document outlines the planned features and improvements for the Finance Das
   ./scripts/restore.sh backups/2025-11-20/
   ```
 
+#### 8. Financial Metrics Extraction
+- **Problem:** Need quick access to key financial metrics (balances, totals) without querying the database
+- **Solution:** Generate JSON summary reports with important metrics
+- **Features:**
+  - Extract yearly summaries:
+    - Total charges for the year
+    - Total payments for the year
+    - End-of-year balance
+    - Transaction count
+  - Monthly breakdowns:
+    - End-of-month balance (running total)
+    - Monthly charges
+    - Monthly payments
+    - Transaction count per month
+- **Output Format:**
+  ```json
+  {
+    "summary": {
+      "year": 2024,
+      "total_charges": 9564.37,
+      "total_payments": 9565.34,
+      "end_of_year_balance": -0.97,
+      "transaction_count": 392
+    },
+    "monthly_balances": {
+      "2024-01": {
+        "end_of_month_balance": -1.35,
+        "charges": 1273.74,
+        "payments": 1275.09,
+        "transaction_count": 49
+      }
+    }
+  }
+  ```
+- **Use Cases:**
+  - Quick financial health checks
+  - Export data for tax preparation
+  - Integration with other tools/spreadsheets
+  - Backup of key metrics outside the database
+- **Implementation:**
+  - Python script to parse CSV and generate JSON
+  - Command-line tool: `python extract_metrics.py [csv_file]`
+  - Output saved to `data/json/` directory
+- **Example:**
+  ```bash
+  python extract_metrics.py
+  # Output: data/json/amex_bluecash_2024_metrics.json
+  ```
+
 ### Success Metrics
 - ✅ Process 10,000+ transactions without performance degradation
 - ✅ Grafana dashboard load time < 2 seconds
