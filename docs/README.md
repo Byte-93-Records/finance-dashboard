@@ -11,50 +11,43 @@ This directory follows the **Diataxis** framework for technical documentation:
 ```
 docs/
 ├── README.md                    # This file
-├── next_features.md             # Feature roadmap (all versions)
 │
 ├── openspec/                    # Technical specifications (BEFORE implementation)
-│   ├── v0.1/                    # Completed specs for v0.1
-│   │   ├── pdf_processor/
-│   │   ├── csv_parser/
-│   │   └── grafana_integration/
-│   ├── v0.2/                    # Specs for v0.2 (to be created)
-│   │   ├── bank_processors/
-│   │   ├── materialized_views/
-│   │   └── performance_optimization/
-│   └── template.md              # Template for new OpenSpec proposals
+│   ├── openspec_readme.md       # OpenSpec workflow documentation
+│   ├── openspec_workflow.md     # Detailed workflow guide
+│   └── v0.2/                    # Specs for v0.2 (to be created)
+│       ├── bank_processors/
+│       ├── materialized_views/
+│       └── performance_optimization/
 │
-├── versions/                    # Version reports (AFTER implementation)
-│   ├── v0.1-initial-implementation.md
-│   ├── v0.2-scale-performance.md       # To be created
-│   └── v0.3-multi-source.md            # To be created
+├── versions/                    # Version implementation docs (AFTER release)
+│   └── v0.1/                    # ✅ v0.1 implementation details
+│       ├── v0.1-initial-implementation.md  # Release summary
+│       ├── full_implementation/ # Full system walkthrough
+│       ├── pdf_processor/       # PDF extraction walkthrough
+│       ├── reviews/             # Implementation review documents
+│       └── implementation-summary.md  # OpenSpec creation summary
 │
-├── how-to/                      # 📖 How-To Guides (Diataxis)
-│   ├── v0.1/
-│   │   ├── 01-setup-environment.md
-│   │   ├── 02-process-pdf-statements.md
-│   │   ├── 03-ingest-csv-data.md
-│   │   ├── 04-configure-grafana.md
-│   │   └── 05-customize-dashboards.md
-│   └── v0.2/                            # To be created
+├── diataxis/                    # 📚 Diataxis Framework Documentation
+│   ├── how-to/                  # 📖 Task-oriented guides
+│   │   └── v0.1/
+│   │       ├── 01-setup-environment.md
+│   │       ├── 02-process-pdf-statements.md
+│   │       └── troubleshooting.md
+│   ├── tutorials/               # 🎓 Learning-oriented (to be created)
+│   ├── reference/               # 📋 Information-oriented
+│   │   └── filename-format.md
+│   └── explanation/             # 💡 Understanding-oriented (to be created)
 │
-├── tutorials/                   # 🎓 Tutorials (Diataxis)
-│   └── v0.1/
-│       └── getting-started.md           # Complete beginner guide
+├── design_strategies/           # Design decision documents
+│   ├── docker_v_podman_strategy.md
+│   └── repository_pattern_strategy.md
 │
-├── reference/                   # 📚 Reference (Diataxis)
-│   └── v0.1/
-│       ├── database-schema.md
-│       ├── csv-format.md
-│       ├── environment-variables.md
-│       └── filename-format.md           # Moved from root
-│
-└── explanation/                 # 💡 Explanation (Diataxis)
-    └── v0.1/
-        ├── architecture-overview.md
-        ├── design-decisions.md
-        └── pdf-extraction-challenges.md
+└── prompts/                     # AI agent prompts and goals
+    └── project_goals.md
 ```
+
+**Note:** The feature roadmap has moved to `/ROADMAP.md` in the project root for better visibility.
 
 ## Diataxis Framework Explained
 
@@ -166,5 +159,5 @@ When adding documentation:
 
 ---
 
-**Last Updated:** November 20, 2025  
+**Last Updated:** November 23, 2025  
 **Framework:** [Diataxis](https://diataxis.fr/)
