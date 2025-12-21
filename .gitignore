@@ -209,3 +209,4 @@ __marimo__/
 # Finance Dashboard - Data files
 # Contains financial PDFs, CSVs, and processed statements
 data/
+.DS_Store
