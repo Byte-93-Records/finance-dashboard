@@ -5,6 +5,7 @@ from .generic import GenericProcessor
 from .amex import AmexProcessor
 from .chase import ChaseProcessor
 from .citi import CitiProcessor
+from .discover import DiscoverProcessor
 
 __all__ = [
     "BaseProcessor",
@@ -12,4 +13,5 @@ __all__ = [
     "AmexProcessor",
     "ChaseProcessor",
     "CitiProcessor",
+    "DiscoverProcessor",
 ]

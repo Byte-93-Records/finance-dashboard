@@ -9,6 +9,7 @@ from .processors.generic import GenericProcessor
 from .processors.amex import AmexProcessor
 from .processors.chase import ChaseProcessor
 from .processors.citi import CitiProcessor
+from .processors.discover import DiscoverProcessor
 from .exceptions import ExtractionError
 
 logger = logging.getLogger(__name__)
@@ -42,6 +43,7 @@ class PDFRouter:
             AmexProcessor(self.timeout_seconds),
             ChaseProcessor(self.timeout_seconds),
             CitiProcessor(self.timeout_seconds),
+            DiscoverProcessor(self.timeout_seconds),
             GenericProcessor(self.timeout_seconds),  # Fallback, always last
         ]
 
