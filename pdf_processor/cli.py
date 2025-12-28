@@ -6,7 +6,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from .file_handler import FileHandler
-from .extractor import PDFExtractor
+from .router import PDFRouter
 from .validator import CSVValidator
 from .exceptions import PDFProcessorError
 
@@ -43,7 +43,7 @@ def process(dry_run):
     
     try:
         file_handler = FileHandler(pdf_dir, processed_dir, failed_dir)
-        extractor = PDFExtractor(timeout_seconds=timeout)
+        router = PDFRouter(timeout_seconds=timeout)
         validator = CSVValidator()
         
         pdfs = file_handler.list_pending_pdfs()
@@ -59,7 +59,7 @@ def process(dry_run):
             try:
                 # Extract
                 if not dry_run:
-                    csv_path = extractor.extract(pdf_path, csv_dir)
+                    csv_path = router.extract(pdf_path, csv_dir)
                     log.info("Extraction successful", csv_file=csv_path.name)
                     
                     # Validate
