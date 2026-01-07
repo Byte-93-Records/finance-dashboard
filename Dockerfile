@@ -13,7 +13,7 @@ WORKDIR /app
 # Install python dependencies
 COPY pyproject.toml .
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir docling pandas pydantic structlog click python-dotenv psycopg2-binary sqlalchemy alembic pytest pytest-cov
+    pip install --no-cache-dir docling pdfplumber pandas pydantic structlog click python-dotenv psycopg2-binary sqlalchemy alembic
 
 # Copy application code
 COPY . .
