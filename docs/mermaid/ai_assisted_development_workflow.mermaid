@@ -1,0 +1,44 @@
+graph LR
+      subgraph Phase1["🟦 Phase 1: Planning<br/>Spec-Driven"]
+          B1["Step 1: Read existing context<br/>- Review ROADMAP.md<br/>- Review openspec/project.md<br/>- Understand feature scope"]
+          B2["Step 2: Create OpenSpec proposal<br/>- Scaffold proposal.md, spec.md, tasks.md<br/>- Ask Claude to generate specs<br/>- Review proposal alignment"]
+          B3["Step 3: Refine specs until aligned<br/>- Add acceptance criteria<br/>- Handle edge cases<br/>- Reference all required tools"]
+          B4["Step 4: Validate proposal<br/>- Follow openspec/project.md conventions<br/>- Fit ROADMAP.md timeline<br/>- Check dependencies"]
+          B1 --> B2 --> B3 --> B4
+      end
+
+      subgraph Phase2["🟩 Phase 2: Implementation<br/>Task-Driven"]
+          C1["Step 5: Choose execution approach<br/>- Direct: Simple sequential<br/>- Skills: Reusable expertise<br/>- Subagents: Parallel tasks"]
+          C2["Step 6: Start implementation<br/>- Ask Claude to implement<br/>- Use /openspec:apply or skills<br/>- Spawn subagents if needed"]
+          C3["Step 7: Track progress<br/>- Mark tasks as complete<br/>- Watch for spec deviations<br/>- Verify tool usage"]
+          C4["Step 8: Handle blockers<br/>- Describe problems clearly<br/>- Adjust approach if needed<br/>- Keep to spec"]
+          C1 --> C2 --> C3 --> C4
+      end
+
+      subgraph Phase3["🟧 Phase 3: Finalization<br/>Audit & Archive"]
+          D1["Step 9: Verify implementation<br/>- All tasks marked complete<br/>- No spec deviations<br/>- Code follows conventions"]
+          D2["Step 10: Archive the change<br/>- Run: openspec archive {feature}<br/>- Move specs to openspec/specs/<br/>- Clean up change folder"]
+          D3["Step 11: Update documentation<br/>- Update CHANGELOG.md<br/>- Update ROADMAP.md<br/>- Update openspec/project.md"]
+          D1 --> D2 --> D3
+      end
+
+      Phase1 --> Phase2 --> Phase3 --> E["✅ Feature Complete"]
+
+      style Phase1 fill:#E8F4F8,stroke:#4A90E2,stroke-width:2px
+      style Phase2 fill:#E8F8E8,stroke:#4A90E2,stroke-width:2px
+      style Phase3 fill:#FFF4E8,stroke:#4A90E2,stroke-width:2px
+      style E fill:#90E24A,color:#fff,stroke:#2E5C8A,stroke-width:3px
+
+      style B1 fill:#fff,stroke:#4A90E2,stroke-width:1px
+      style B2 fill:#fff,stroke:#4A90E2,stroke-width:1px
+      style B3 fill:#fff,stroke:#4A90E2,stroke-width:1px
+      style B4 fill:#fff,stroke:#4A90E2,stroke-width:1px
+
+      style C1 fill:#fff,stroke:#4A90E2,stroke-width:1px
+      style C2 fill:#fff,stroke:#4A90E2,stroke-width:1px
+      style C3 fill:#fff,stroke:#4A90E2,stroke-width:1px
+      style C4 fill:#fff,stroke:#4A90E2,stroke-width:1px
+
+      style D1 fill:#fff,stroke:#4A90E2,stroke-width:1px
+      style D2 fill:#fff,stroke:#4A90E2,stroke-width:1px
+      style D3 fill:#fff,stroke:#4A90E2,stroke-width:1px
