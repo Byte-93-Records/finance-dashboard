@@ -10,12 +10,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **v0.2 OpenSpec Documentation** [2026-01-07] - Complete planning for Scale & Reliability release
+  - `openspec/V0.2_OVERVIEW.md` - High-level roadmap with all 5 features and shared success criteria
+  - 4 new change proposals with full specs and task checklists:
+    - `v0.2-data-architecture` - Two-tier architecture (raw + analytics layers with materialized views)
+    - `v0.2-database-performance` - Index optimization, connection pooling, query caching
+    - `v0.2-bulk-processing` - Parallel PDF extraction, progress tracking, resume from failure
+    - `v0.2-dashboard-improvements` - Account/date filtering, summary table queries, pagination
+  - All proposals reference TOOLS.md and ROADMAP.md for context
+  - Implementation order documented (dependency chain)
+
 - Financial metrics extraction script (`scripts/analytics/extract_metrics.py`) - Extracts yearly and monthly summaries from CSV statements [2025-11-23]
   - Generates JSON output with total charges, payments, end-of-month balances
   - Supports running balance calculations across months
   - Output saved to `data/json/` directory
 
 ### Changed
+- **Configuration Files Alignment with MVP Stack** [2026-01-07]
+  - `Dockerfile`: Removed `pytest pytest-cov` (deferred to post-MVP), added `pdfplumber` (required for bank-specific processors)
+  - `.env.example`: Fixed duplicate POSTGRES_PASSWORD entries, aligned with `.env` and `docker-compose.yml` for consistency
+  - `TOOLS.md`: Already documented as source of truth for all tool versions and rationale
 - **Project Reorganization** [2025-11-23]
   - Reorganized `scripts/` directory into categorized subdirectories:
     - `scripts/analytics/` - Data analysis and reporting scripts
@@ -74,7 +88,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | Version | Date | Description |
 |---------|------|-------------|
 | 0.1.0 | 2025-11-20 | Initial MVP - Basic PDF to Grafana pipeline |
-| Unreleased | 2025-11-23 | Metrics extraction + project reorganization |
+| Unreleased (v0.2 Planning) | 2026-01-07 | OpenSpec documentation complete - ready for Scale & Reliability phase |
+| Unreleased (Maintenance) | 2025-11-23 | Metrics extraction + project reorganization |
 
 ---
 
