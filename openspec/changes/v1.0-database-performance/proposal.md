@@ -11,7 +11,7 @@ Result: Dashboard slow, imports slow, concurrent queries fail.
 
 ## What Changes
 
-Add performance layer: **indexes, partitioning (via v0.2-data-architecture), and connection pooling**.
+Add performance layer: **indexes, partitioning (via v1.0-data-architecture), and connection pooling**.
 
 1. **Indexes**
    - `transaction_date` (date range queries in Grafana)
@@ -19,7 +19,7 @@ Add performance layer: **indexes, partitioning (via v0.2-data-architecture), and
    - `transaction_hash` (deduplication lookups)
    - Composite: `(account_id, transaction_date)` (common Grafana queries)
 
-2. **Partitioning** (handled by v0.2-data-architecture)
+2. **Partitioning** (handled by v1.0-data-architecture)
    - Split `transactions` by year
    - Queries automatically prune irrelevant partitions
 
@@ -54,4 +54,4 @@ See TOOLS.md:
 
 ## Dependencies
 
-Requires completion of **v0.2-data-architecture** (partitioning).
+Requires completion of **v1.0-data-architecture** (partitioning).

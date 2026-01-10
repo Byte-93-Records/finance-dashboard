@@ -16,7 +16,7 @@ Implement parallel PDF processing with worker pool:
 1. **Parallel Extraction**
    - Use `concurrent.futures.ThreadPoolExecutor` (4-8 workers default)
    - Each worker processes a PDF independently
-   - Shared database connection pool (already configured in v0.2-database-performance)
+   - Shared database connection pool (already configured in v1.0-database-performance)
 
 2. **Progress Tracking**
    - Real-time progress bar in CLI: `[████████░░] 80/100 PDFs (2 min remaining)`
@@ -55,5 +55,5 @@ See TOOLS.md:
 ## Dependencies
 
 Depends on:
-- **v0.2-pdf-processors** (stable extraction interface)
-- **v0.2-database-performance** (connection pooling for concurrent writes)
+- **v1.0-pdf-processors** (stable extraction interface)
+- **v1.0-database-performance** (connection pooling for concurrent writes)

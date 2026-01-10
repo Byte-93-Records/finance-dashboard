@@ -54,5 +54,5 @@ See TOOLS.md:
 ## Dependencies
 
 Requires completion of:
-- **v0.2-data-architecture** (summary tables exist)
-- **v0.2-database-performance** (indexes for fast queries)
+- **v1.0-data-architecture** (summary tables exist)
+- **v1.0-database-performance** (indexes for fast queries)
