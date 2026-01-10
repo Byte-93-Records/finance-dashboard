@@ -76,9 +76,21 @@ PDF → Router (filename detection) → Bank Processor → CSV
 
 ---
 
-## v0.5, v0.7, v0.9 - Reserved 📋 TBD
+## v0.5 - Data Quality & Validation 📋 Planned
 
-**Status:** Placeholder for future feature releases
+Transaction validation, fuzzy duplicate detection, data quality reports.
+
+---
+
+## v0.7 - Performance Foundations 📋 Planned
+
+Database indexes, query optimization, connection pooling setup.
+
+---
+
+## v0.9 - CLI & Workflow Improvements 📋 Planned
+
+Progress bars, dry-run mode, logging and import history.
 
 ---
 

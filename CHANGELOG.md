@@ -89,9 +89,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 |---------|------|-------------|
 | 0.1.0 | 2025-11-20 | Initial MVP - Basic PDF to Grafana pipeline |
 | 0.3 (Planned) | TBD | Complete Data Ingestion - Bank-specific PDF processors (Chase, Amex, Citi), load all historical statements |
-| 0.5 (Planned) | TBD | Reserved for future feature |
-| 0.7 (Planned) | TBD | Reserved for future feature |
-| 0.9 (Planned) | TBD | Reserved for future feature |
+| 0.5 (Planned) | TBD | Data Quality & Validation - Transaction validation, fuzzy duplicate detection, data quality reports |
+| 0.7 (Planned) | TBD | Performance Foundations - Database indexes, query optimization, connection pooling |
+| 0.9 (Planned) | TBD | CLI & Workflow Improvements - Progress bars, dry-run mode, logging |
 | 1.0 (Planned) | TBD | Scale & Reliability - Two-tier data architecture, database optimization, dashboard improvements for 100k+ transactions |
 | 2.0 (Planned) | TBD | Multi-Source Integration - Bank checking/savings, investment statements, transaction categorization |
 

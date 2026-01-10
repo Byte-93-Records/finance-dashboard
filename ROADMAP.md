@@ -62,19 +62,37 @@ Routing: `chase_sapphire_01_2025.pdf` → `ChaseProcessor`
 
 ## v0.5 (Future)
 
-**Theme:** TBD - Reserved for future feature
+**Theme:** Data Quality & Validation
+
+Ensure imported data is accurate before scaling. Add validation rules, duplicate detection improvements, and data integrity checks.
+
+- Transaction validation (date ranges, amount formats, required fields)
+- Improved duplicate detection (fuzzy matching for similar transactions)
+- Data quality reports (missing data, anomalies, parsing issues)
 
 ---
 
 ## v0.7 (Future)
 
-**Theme:** TBD - Reserved for future feature
+**Theme:** Performance Foundations
+
+Lay groundwork for v1.0 scale. Add essential indexes and optimize critical queries without full architecture changes.
+
+- Database indexes on high-query columns (date, account, amount)
+- Query optimization for existing Grafana panels
+- Basic connection pooling setup
 
 ---
 
 ## v0.9 (Future)
 
-**Theme:** TBD - Reserved for future feature
+**Theme:** CLI & Workflow Improvements
+
+Improve developer experience and operational tooling before v1.0 feature expansion.
+
+- Enhanced CLI with progress bars and better error messages
+- Dry-run mode for imports (preview without committing)
+- Basic logging and import history tracking
 
 ---
 
