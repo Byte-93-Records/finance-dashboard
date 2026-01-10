@@ -18,14 +18,74 @@
 
 ---
 
-## v0.2 (Next)
+## v0.3 (Next)
+
+**Theme:** Complete Data Ingestion - Bank-Specific PDF Processors
+
+### Goals
+1. Extract transactions reliably from all major credit card PDFs (Amex, Chase, Citi)
+2. Load all historical statements into database
+3. Eliminate parsing failures from generic Docling
+
+### Features
+
+#### 1. Bank-Specific PDF Processors
+**Problem:** Generic Docling fails on complex PDFs (Amex multi-line, Chase tables)
+
+**Solution:** Router-based processor selection:
+```
+pdf_processor/
+├── router.py              # Detects bank from filename, routes to processor
+└── processors/
+    ├── base.py            # Abstract base class
+    ├── chase.py           # Chase-specific (pdfplumber)
+    ├── amex.py            # Amex-specific (pdfplumber)
+    ├── citi.py            # Citi-specific
+    └── generic.py         # Fallback (Docling)
+```
+
+Routing: `chase_sapphire_01_2025.pdf` → `ChaseProcessor`
+
+#### 2. Data Loading
+- Validate and load all historical PDFs/CSVs
+- Identify and fix any problematic files
+- Confirm deduplication across re-runs
+- Verify data integrity
+
+### Success Criteria
+- [ ] All 2024-2025 credit card statements loaded (Amex, Chase, Citi, etc.)
+- [ ] Zero parsing failures for existing statements
+- [ ] Duplicate detection working across all imports
+- [ ] Complete transaction history in database
+
+---
+
+## v0.5 (Future)
+
+**Theme:** TBD - Reserved for future feature
+
+---
+
+## v0.7 (Future)
+
+**Theme:** TBD - Reserved for future feature
+
+---
+
+## v0.9 (Future)
+
+**Theme:** TBD - Reserved for future feature
+
+---
+
+## v1.0 (Future)
 
 **Theme:** Scale & Reliability - 100k+ Transaction Support
 
 ### Goals
 1. Handle 100,000+ transactions without performance issues
-2. Process all credit card PDFs reliably (Amex, Chase, Citi, etc.)
-3. Dashboard loads fast regardless of data size
+2. Dashboard loads fast regardless of data size
+3. Maintain query performance as data grows
 
 ### Features
 
@@ -58,30 +118,13 @@ Analytics Layer (Grafana reads from this):
 - Connection pooling for concurrent queries
 - Query caching in Grafana (1-5 min TTL)
 
-#### 3. Bank-Specific PDF Processors
-**Problem:** Generic Docling fails on complex PDFs (Amex multi-line, Chase tables)
-
-**Solution:** Router-based processor selection:
-```
-pdf_processor/
-├── router.py              # Detects bank from filename, routes to processor
-└── processors/
-    ├── base.py            # Abstract base class
-    ├── chase.py           # Chase-specific (pdfplumber)
-    ├── amex.py            # Amex-specific (pdfplumber)
-    ├── citi.py            # Citi-specific
-    └── generic.py         # Fallback (Docling)
-```
-
-Routing: `chase_sapphire_01_2025.pdf` → `ChaseProcessor`
-
-#### 4. Bulk Processing
+#### 3. Bulk Processing
 - Process multiple PDFs in parallel (configurable workers)
 - Progress bar with ETA for large batches
 - Resume from failure (track processed file hashes)
 - Memory-efficient streaming (don't load all PDFs at once)
 
-#### 5. Dashboard Improvements
+#### 4. Dashboard Improvements
 - Account dropdown filter (query accounts table)
 - Date range presets (Last Month, Quarter, YTD, Custom)
 - Panels read from summary tables for speed:
@@ -93,13 +136,12 @@ Routing: `chase_sapphire_01_2025.pdf` → `ChaseProcessor`
 ### Success Criteria
 - [ ] Process 100,000 transactions in < 5 minutes
 - [ ] Dashboard loads in < 2 seconds with 100k+ rows
-- [ ] All 2024 credit card data from all cards ingested
 - [ ] Zero duplicate imports across re-runs
 - [ ] Memory usage < 2GB during bulk import
 
 ---
 
-## v0.3 (Future)
+## v2.0 (Future)
 
 **Theme:** Multi-Source Integration
 

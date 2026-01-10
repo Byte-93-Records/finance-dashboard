@@ -26,9 +26,9 @@
 
 ---
 
-## v0.2 - Scale & Reliability 🔄 In Progress
+## v0.3 - Complete Data Ingestion 🔄 In Progress
 
-**Target:** December 2025
+**Target:** January 2026
 
 ### Completed ✅
 
@@ -63,68 +63,65 @@ PDF → Router (filename detection) → Bank Processor → CSV
 
 | Feature | Purpose | Status |
 |---------|---------|--------|
-| Database indexes | Performance for 100k+ transactions | ⬜ Not started |
-| Summary tables / materialized views | Fast Grafana queries | ⬜ Not started |
-| Table partitioning | Efficient date-range queries | ⬜ Not started |
-| Bulk processing | Parallel PDF processing, progress bars | ⬜ Not started |
-| Dashboard improvements | Filters, presets, new panels | ⬜ Not started |
-| Documentation | Processor docs, adding new banks | ⬜ Not started |
+| Load all historical statements | Validate & ingest complete statement archive | ⬜ Not started |
+| Fix any problematic files | Identify and resolve parsing failures | ⬜ Not started |
+| Verify deduplication | Confirm no duplicates across imports | ⬜ Not started |
+| Data integrity checks | Validate complete transaction history | ⬜ Not started |
 
 ### Success Criteria
-- [ ] Process 100,000 transactions in < 5 minutes
-- [ ] Dashboard loads in < 2 seconds with 100k+ rows
-- [ ] All 2024 credit card data from all cards ingested
-- [ ] Zero duplicate imports across re-runs
+- [ ] All 2024-2025 credit card statements loaded (Amex, Chase, Citi, etc.)
+- [ ] Zero parsing failures for existing statements
+- [ ] Duplicate detection working across all imports
+- [ ] Complete transaction history in database
 
 ---
 
-## v0.3 - Multi-Source Integration 📋 Planned
+## v0.5, v0.7, v0.9 - Reserved 📋 TBD
+
+**Status:** Placeholder for future feature releases
+
+---
+
+## v1.0 - Scale & Reliability 🚀 Planned
 
 **Target:** Q1 2026
 
 ### Goals
-- Integrate bank statements (checking/savings accounts)
-- Integrate investment statements (Fidelity, Vanguard, Robinhood)
-- Unified ledger to eliminate duplicate transactions
+1. Handle 100,000+ transactions without performance issues
+2. Dashboard loads fast regardless of data size
+3. Maintain query performance as data grows
 
 ### Planned Features
 
 | Feature | Description |
 |---------|-------------|
-| Universal Ledger Schema | Double-entry system to track transfers without duplicates |
-| Bank Statement Parsers | Chase checking, Bank of America, Wells Fargo, credit unions |
-| Investment Statement Parsers | Fidelity, Vanguard, Robinhood - trades, dividends, holdings |
-| Smart Duplicate Detection | Fuzzy matching to link related transactions (e.g., credit card payment from checking) |
-| Advanced Dashboards | Net worth, cash flow, investment performance |
+| Data Architecture for Scale | Two-tier architecture (raw + analytics layers with materialized views) |
+| Database Performance | Indexes, partitioning, connection pooling, query caching |
+| Bulk Processing | Parallel PDF extraction, progress tracking, resume from failure |
+| Dashboard Improvements | Filters, date range presets, summary table queries, pagination |
+
+### Success Criteria
+- [ ] Process 100,000 transactions in < 5 minutes
+- [ ] Dashboard loads in < 2 seconds with 100k+ rows
+- [ ] Memory usage < 2GB during bulk import
+
+---
+
+## v2.0 - Multi-Source Integration 📊 Future
+
+**Target:** Q2 2026
+
+### Planned Features
+- **Universal Ledger Schema** - Double-entry system to track transfers without duplicates
+- **Bank Statement Parsers** - Chase checking, Bank of America, Wells Fargo, credit unions
+- **Investment Statement Parsers** - Fidelity, Vanguard, Robinhood - trades, dividends, holdings
+- **Smart Duplicate Detection** - Fuzzy matching to link related transactions
+- **Advanced Dashboards** - Net worth, cash flow, investment performance
 
 ### Success Criteria
 - All financial accounts integrated (checking, credit cards, investments)
 - Zero duplicate transactions in unified ledger
 - Net worth calculation accurate to within $100
-
----
-
-## v0.4 - Intelligence Layer 🤖 Future
-
-**Target:** Q2 2026
-
-### Planned Features
-- **ML-Based Categorization**: Auto-categorize transactions by merchant
-- **Smart Merchant Recognition**: Normalize merchant names (e.g., "TST*STARBUCKS" → "Starbucks")
-- **Predictive Analytics**: Monthly spending forecasts, subscription detection
-- **Anomaly Detection**: Flag unusual transactions, potential duplicates
-- **Category Dashboards**: Spending by category, budget vs actual
-
----
-
-## v0.5+ - Ecosystem 🌟 Vision
-
-### Potential Features
-- Real-time bank sync (Plaid API)
-- Mobile application
-- Multi-user / household support
-- Natural language queries ("How much did I spend on groceries?")
-- Tax optimization reports
 
 ---
 
@@ -189,7 +186,7 @@ PDF → Router (filename detection) → Bank Processor → CSV
 http://localhost:3000
 ```
 
-### Supported Banks (v0.2)
+### Supported Banks (v0.3+)
 | Bank | Filename Pattern | Processor |
 |------|------------------|-----------|
 | Amex | `amex_*.pdf` | AmexProcessor |

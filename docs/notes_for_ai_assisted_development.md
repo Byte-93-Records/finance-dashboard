@@ -161,9 +161,10 @@ finance-dashboard/
 ├── ROADMAP.md                         ← Release themes
 ├── CHANGELOG.md                       ← What's been done
 ├── openspec/
-│   ├── V0.2_OVERVIEW.md              ← Current release
+│   ├── V1.0_OVERVIEW.md              ← Planned release (Scale & Reliability)
 │   ├── project.md                    ← Conventions
-│   ├── changes/v0.2-**/              ← Active proposals
+│   ├── changes/v0.3-**/              ← v0.3 features (data ingestion)
+│   ├── changes/v1.0-**/              ← v1.0 features (scale & reliability)
 │   └── specs/                        ← Finalized specs
 ├── database/
 │   ├── models.py                     ← SQLAlchemy ORM
@@ -178,7 +179,7 @@ finance-dashboard/
 
 ### Project-Specific Execution Examples
 
-**v0.2-pdf-processors (Mixed Execution):**
+**v0.3-pdf-processors (Mixed Execution):**
 ```
 Tasks breakdown:
 - Task 1: Create base.py           → Direct (simple setup)
@@ -192,7 +193,7 @@ Why this mix?
 - Tasks 1 & 4 are sequential → direct execution
 ```
 
-**v0.2-data-architecture (Direct + Skill):**
+**v1.0-data-architecture (Direct + Skill):**
 ```
 Tasks breakdown:
 - All Alembic migrations → Direct (sequential schema changes)
@@ -206,7 +207,7 @@ Tasks breakdown:
 - [ ] Check if database changes needed (→ Alembic migration required)
 - [ ] Check if new Python dependency needed (→ update pyproject.toml)
 - [ ] Check if Docker changes needed (→ update Dockerfile, docker-compose.yml)
-- [ ] Verify feature aligns with current release theme (e.g., v0.2: Scale & Reliability)
+- [ ] Verify feature aligns with current release theme (e.g., v0.3: Complete Data Ingestion, v1.0: Scale & Reliability)
 - [ ] Decide execution approach based on task characteristics
 
 **During Implementation:**
@@ -230,31 +231,43 @@ Tasks breakdown:
 - [ ] Update CHANGELOG.md with changes + date
 - [ ] Update ROADMAP.md if moving feature status
 
-### v0.2 Feature Implementation Order
+### v0.3 Feature Implementation Order (Complete Data Ingestion)
 
-These features have dependencies. **Implement in this order:**
+**Primary focus:** Load all historical statements using bank-specific PDF processors
 
-1. **v0.2-data-architecture** ← Foundation (do first)
-   - Execution: Direct (sequential migrations)
-   - Tools: SQLAlchemy, Alembic, PostgreSQL
-   - Output: Database migrations, new models
-
-2. **v0.2-database-performance** ← After data architecture
-   - Execution: Direct (sequential index creation)
-   - Tools: SQLAlchemy, Alembic, PostgreSQL
-   - Output: Index migrations
-
-3. **v0.2-pdf-processors** ← Can run parallel with above
+1. **v0.3-pdf-processors** ← Already started
    - Execution: Mixed (Direct + Subagents + Skills)
    - Tools: pdfplumber, Docling, Click
    - Output: processors/, router.py
+   - Status: Bank-specific extraction (Amex, Chase, Citi) working
 
-4. **v0.2-bulk-processing** ← After pdf-processors stable
+2. **v0.3-data-loading** ← Next
+   - Execution: Direct (load all statements)
+   - Tools: Python scripts, PostgreSQL
+   - Output: Complete transaction history in database
+
+---
+
+### v1.0 Feature Implementation Order (Scale & Reliability)
+
+These features have dependencies. **Implement in this order:**
+
+1. **v1.0-data-architecture** ← Foundation (do first)
+   - Execution: Direct (sequential migrations)
+   - Tools: SQLAlchemy, Alembic, PostgreSQL
+   - Output: Database migrations, new models, materialized views
+
+2. **v1.0-database-performance** ← After data architecture
+   - Execution: Direct (sequential index creation)
+   - Tools: SQLAlchemy, Alembic, PostgreSQL
+   - Output: Index migrations, connection pooling
+
+3. **v1.0-bulk-processing** ← After data architecture
    - Execution: Direct (single feature, sequential)
    - Tools: Click, structlog, Python concurrent.futures
    - Output: bulk_processor.py, CLI flags
 
-5. **v0.2-dashboard-improvements** ← Last (uses all other features)
+4. **v1.0-dashboard-improvements** ← Last (uses all other features)
    - Execution: Direct (Grafana config changes)
    - Tools: Grafana, PostgreSQL
    - Output: Dashboard JSON, views
@@ -325,7 +338,7 @@ Task: Implement 3 PDF processors simultaneously
 **Best practice: Mix execution methods based on task characteristics**
 
 ```
-Example: v0.2-pdf-processors
+Example: v0.3-pdf-processors
 ├── Task 1: Create base.py           → Direct (setup)
 ├── Task 2: Implement AmexProcessor  → Subagent + "pdf-parsing" skill
 ├── Task 3: Implement ChaseProcessor → Subagent + "pdf-parsing" skill
@@ -416,7 +429,7 @@ Use this for Finance Dashboard features specifically.
 ### When to Use OpenSpec (Generic)
 
 **Use OpenSpec for:**
-- ✅ Any new feature (v0.2, v0.3, etc.)
+- ✅ Any new feature (v0.3, v0.3, etc.)
 - ✅ Significant bug fixes (affects architecture)
 - ✅ Performance optimizations (documented approach)
 - ✅ Schema/database changes
@@ -499,10 +512,10 @@ python scripts/ingestion/ingest_data.py    # Ingest CSVs
 
 **Git (conventional commits):**
 ```bash
-git checkout -b feature/v0.2-{feature}     # Create feature branch
+git checkout -b feature/v0.3-{feature}     # Create feature branch
 git commit -m "feat(db): add materialized views"
 git commit -m "fix(pdf): handle multiline descriptions"
-git commit -m "docs: archive v0.2-{feature}"
+git commit -m "docs: archive v0.3-{feature}"
 ```
 
 ---
@@ -519,7 +532,7 @@ git commit -m "docs: archive v0.2-{feature}"
 - **Subagents for parallelism:** Only when tasks are truly independent
 
 ### Project-Specific (Finance Dashboard)
-- **Feature branches:** Always commit to feature branch: `git checkout -b feature/v0.2-{name}`
+- **Feature branches:** Always commit to feature branch: `git checkout -b feature/v0.3-{name}`
 - **Conventional commits:** Use `feat:`, `fix:`, `docs:`, `refactor:` prefixes
 - **Test destructive changes:** Always test Alembic migrations (upgrade + downgrade) before committing
 - **Environment variables:** Use `.env` for local development, document in `.env.example`

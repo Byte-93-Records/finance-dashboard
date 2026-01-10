@@ -10,13 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- **v0.2 OpenSpec Documentation** [2026-01-07] - Complete planning for Scale & Reliability release
-  - `openspec/V0.2_OVERVIEW.md` - High-level roadmap with all 5 features and shared success criteria
+- **v1.0 OpenSpec Documentation** [2026-01-07] - Complete planning for Scale & Reliability release
+  - `openspec/V1.0_OVERVIEW.md` - High-level roadmap with all features and shared success criteria
   - 4 new change proposals with full specs and task checklists:
-    - `v0.2-data-architecture` - Two-tier architecture (raw + analytics layers with materialized views)
-    - `v0.2-database-performance` - Index optimization, connection pooling, query caching
-    - `v0.2-bulk-processing` - Parallel PDF extraction, progress tracking, resume from failure
-    - `v0.2-dashboard-improvements` - Account/date filtering, summary table queries, pagination
+    - `v1.0-data-architecture` - Two-tier architecture (raw + analytics layers with materialized views)
+    - `v1.0-database-performance` - Index optimization, connection pooling, query caching
+    - `v1.0-bulk-processing` - Parallel PDF extraction, progress tracking, resume from failure
+    - `v1.0-dashboard-improvements` - Account/date filtering, summary table queries, pagination
   - All proposals reference TOOLS.md and ROADMAP.md for context
   - Implementation order documented (dependency chain)
 
@@ -47,7 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
       - `how-to/` - Task-oriented guides (setup, troubleshooting)
       - `reference/` - Information-oriented docs (filename format)
       - `tutorials/`, `explanation/` - Reserved for future
-    - `docs/openspec/` - Technical specs (BEFORE implementation, v0.2+)
+    - `docs/openspec/` - Technical specs (BEFORE implementation, v0.3+)
   - Moved `troubleshooting.md` → `docs/diataxis/how-to/v0.1/troubleshooting.md`
   - Moved `spec_creation_summary_docs/` → `docs/versions/v0.1/implementation-summary.md`
   - Moved `filename-format.md` → `docs/diataxis/reference/filename-format.md`
@@ -88,8 +88,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | Version | Date | Description |
 |---------|------|-------------|
 | 0.1.0 | 2025-11-20 | Initial MVP - Basic PDF to Grafana pipeline |
-| Unreleased (v0.2 Planning) | 2026-01-07 | OpenSpec documentation complete - ready for Scale & Reliability phase |
-| Unreleased (Maintenance) | 2025-11-23 | Metrics extraction + project reorganization |
+| 0.3 (Planned) | TBD | Complete Data Ingestion - Bank-specific PDF processors (Chase, Amex, Citi), load all historical statements |
+| 0.5 (Planned) | TBD | Reserved for future feature |
+| 0.7 (Planned) | TBD | Reserved for future feature |
+| 0.9 (Planned) | TBD | Reserved for future feature |
+| 1.0 (Planned) | TBD | Scale & Reliability - Two-tier data architecture, database optimization, dashboard improvements for 100k+ transactions |
+| 2.0 (Planned) | TBD | Multi-Source Integration - Bank checking/savings, investment statements, transaction categorization |
 
 ---
 

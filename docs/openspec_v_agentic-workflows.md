@@ -87,7 +87,7 @@ Task: Implement 3 PDF processors simultaneously
 ## Practical Example: OpenSpec + Execution
 
 ```
-OpenSpec Change: v0.2-pdf-processors
+OpenSpec Change: v0.3-pdf-processors (Bank-Specific Processors)
 ├── proposal.md    ← Human approves this
 ├── tasks.md       ← Determines execution approach
 │   ├── Task 1: Create base.py           → Direct (simple)
@@ -131,8 +131,9 @@ OpenSpec Change: v0.2-pdf-processors
 
 **Example progression:**
 - v0.1: Direct execution (MVP, learning codebase)
-- v0.2: Skills for PDF parsing (repeated logic across processors)
-- v0.2: Subagents for parallel processor implementation (5 banks at once)
+- v0.3: Skills for PDF parsing (bank-specific processors with shared logic)
+- v0.3: Subagents for parallel processor implementation (Chase, Amex, Citi simultaneously)
+- v1.0: Direct + Skills for scale/performance features (simpler, sequential work)
 
 ---
 

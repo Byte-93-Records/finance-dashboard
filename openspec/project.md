@@ -68,9 +68,20 @@ PDF files → Docling → CSV → Heuristic Parser → PostgreSQL → Grafana
 - **Idempotent imports** - same PDF won't duplicate transactions
 - **Docker required** - entire stack via `docker-compose up`
 
-## What's Planned (v0.2)
+## What's Planned
 
-See `/ROADMAP.md` for details. Key priorities:
-1. Bank-specific PDF processors (Amex, Chase, Citi)
-2. Summary tables for 100k+ transaction performance
-3. Improved Grafana dashboards
+See `/ROADMAP.md` for details.
+
+### v0.3 - Complete Data Ingestion
+1. Bank-specific PDF processors (Amex, Chase, Citi) ✅ Started
+2. Load all historical statements into database
+
+### v1.0 - Scale & Reliability
+1. Summary tables for 100k+ transaction performance
+2. Database optimization (indexes, partitioning)
+3. Improved Grafana dashboards with filters
+
+### v2.0+ - Multi-Source Integration
+1. Bank checking/savings accounts
+2. Investment statements (Fidelity, Vanguard, etc.)
+3. Transaction categorization

@@ -14,7 +14,7 @@ This directory contains all operational scripts, organized by purpose:
   - `debug_docling.py` - Debug Docling PDF processor
   
 - **`maintenance/`** - System maintenance scripts (backup, restore, cleanup)
-  - _Reserved for v0.2 features_
+  - _Reserved for v1.0+ features_
 
 - **`process-and-view.sh`** - All-in-one pipeline script (see below)
 
