@@ -1,6 +1,6 @@
 # Finance Dashboard - Project Status
 
-**Last Updated:** December 28, 2025
+**Last Updated:** January 11, 2026
 
 ---
 
@@ -48,7 +48,7 @@ PDF → Router (filename detection) → Bank Processor → CSV
 |-----------|--------|--------|---------------------|
 | AmexProcessor | Text extraction (pdfplumber) | ✅ Working | 339 |
 | ChaseProcessor | Text extraction (pdfplumber) | ✅ Working | 72 |
-| CitiProcessor | Docling (delegates to generic) | ✅ Created | Pending test |
+| CitiProcessor | Docling (delegates to generic) | ✅ Working | 52 |
 | GenericProcessor | Docling (fallback) | ✅ Working | - |
 
 **Files Added:**
