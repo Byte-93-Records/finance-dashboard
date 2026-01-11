@@ -22,6 +22,41 @@ structlog.configure(
 
 logger = structlog.get_logger()
 
+
+def is_running_in_docker() -> bool:
+    """Detect if we're running inside a Docker container."""
+    # Check for .dockerenv file (most reliable)
+    if Path("/.dockerenv").exists():
+        return True
+    # Check if /data directory exists and is writable (Docker mount)
+    data_path = Path("/data")
+    if data_path.exists():
+        try:
+            # Try to check if writable
+            return os.access(data_path, os.W_OK)
+        except:
+            pass
+    return False
+
+
+def get_default_paths() -> dict:
+    """Get default paths based on environment (Docker vs local)."""
+    if is_running_in_docker():
+        return {
+            "pdf_dir": "/data/pdfs",
+            "csv_dir": "/data/csv",
+            "processed_dir": "/data/processed",
+            "failed_dir": "/data/failed",
+        }
+    else:
+        return {
+            "pdf_dir": "data/pdfs",
+            "csv_dir": "data/csvs",
+            "processed_dir": "data/processed",
+            "failed_dir": "data/failed",
+        }
+
+
 @click.group()
 def cli():
     """Finance Dashboard PDF Processor CLI."""
@@ -31,15 +66,41 @@ def cli():
 @click.option("--dry-run", is_flag=True, help="Run without moving files.")
 def process(dry_run):
     """Process all pending PDFs."""
-    
-    # Load config from env
-    pdf_dir = Path(os.getenv("PDF_INPUT_DIR", "data/pdfs"))
-    csv_dir = Path(os.getenv("CSV_OUTPUT_DIR", "data/csv"))
-    processed_dir = Path(os.getenv("PROCESSED_DIR", "data/processed"))
-    failed_dir = Path(os.getenv("FAILED_DIR", "data/failed"))
+
+    # Get defaults based on environment
+    in_docker = is_running_in_docker()
+    defaults = get_default_paths()
+
+    # Load config from env, falling back to environment-appropriate defaults
+    # Note: If env vars are set to Docker paths but we're not in Docker, use local defaults
+    pdf_dir_env = os.getenv("PDF_INPUT_DIR")
+    csv_dir_env = os.getenv("CSV_OUTPUT_DIR")
+    processed_dir_env = os.getenv("PROCESSED_DIR")
+    failed_dir_env = os.getenv("FAILED_DIR")
+
+    # If env vars point to /data/* but we're not in Docker, ignore them
+    def resolve_path(env_val, default):
+        if env_val and env_val.startswith("/data") and not in_docker:
+            return default
+        return env_val if env_val else default
+
+    pdf_dir = Path(resolve_path(pdf_dir_env, defaults["pdf_dir"]))
+    csv_dir = Path(resolve_path(csv_dir_env, defaults["csv_dir"]))
+    processed_dir = Path(resolve_path(processed_dir_env, defaults["processed_dir"]))
+    failed_dir = Path(resolve_path(failed_dir_env, defaults["failed_dir"]))
     timeout = int(os.getenv("PDF_TIMEOUT_SECONDS", "30"))
-    
-    logger.info("Starting PDF processing", dry_run=dry_run)
+
+    # Create directories if they don't exist
+    for dir_path in [csv_dir, processed_dir, failed_dir]:
+        dir_path.mkdir(parents=True, exist_ok=True)
+
+    logger.info(
+        "Starting PDF processing",
+        dry_run=dry_run,
+        environment="docker" if in_docker else "local",
+        pdf_dir=str(pdf_dir),
+        csv_dir=str(csv_dir),
+    )
     
     try:
         file_handler = FileHandler(pdf_dir, processed_dir, failed_dir)
