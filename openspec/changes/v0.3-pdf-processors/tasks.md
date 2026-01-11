@@ -21,7 +21,7 @@
 
 ## 5. Implement CitiProcessor
 - [x] Create `processors/citi.py` (delegates to GenericProcessor/Docling)
-- [ ] Verify existing Citi statements still process correctly
+- [x] Verify existing Citi statements still process correctly
 
 ## 6. Update CLI to use router
 - [x] Modify `cli.py` to use `PDFRouter` instead of `PDFExtractor` directly
@@ -31,7 +31,7 @@
 ## 7. Test with real PDFs
 - [x] Test Amex yearly statements - 339 transactions
 - [x] Test Chase statements - 48 + 24 = 72 transactions
-- [ ] Test Citi statements (verify no regression)
+- [x] Test Citi statements - 30 + 22 = 52 transactions (no regression)
 - [x] Verify extracted CSVs match expected schema
 
 ## 8. Documentation
